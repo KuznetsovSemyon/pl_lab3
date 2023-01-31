@@ -6,21 +6,21 @@ namespace pl_lab3
 {
     class TockenRing
     {
-        public List<Channel<Token>> §ãh = new List<Channel<Token>>();
+        public List<Channel<Token>> ch = new List<Channel<Token>>();
         public void Init(int amount, string message, int recipient, int tockenTtl)
         {
             Token token = new(message, recipient, tockenTtl);
             List<Thread> threadList = new List<Thread>();
             Channel<Token> newCh = Channel.CreateBounded<Token>(new BoundedChannelOptions(1));
-            §ãh.Add(newCh);
-            §ãh[0].Writer.WriteAsync(token);
+            ch.Add(newCh);
+            ch[0].Writer.WriteAsync(token);
             int id = 1;
             while (id < amount)
             {
-                §ãh.Add(newCh);
+                ch.Add(newCh);
                 async void ThreadTask()
                 {
-                    await HandleToken(§ãh[id - 1], §ãh[id], id);
+                    await HandleToken(ch[id - 1], ch[id], id);
                 }
                 threadList.Add(new Thread(ThreadTask));
                 threadList[id - 1].Start();
